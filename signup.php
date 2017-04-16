@@ -12,6 +12,18 @@ if(isset($data['do_signup']))
 		$errors[] = 'Введите логин!';
 	}
 
+	if(trim($data['name']) == '')
+	{
+		//сделать вставку в спан как в перовм уроке
+		$errors[] = 'Введите Имя!';
+	}
+
+	if(trim($data['surname']) == '')
+	{
+		//сделать вставку в спан как в перовм уроке
+		$errors[] = 'Введите фамилию!';
+	}
+
 	if(trim($data['email']) == '')
 	{
 		//сделать вставку в спан как в перовм уроке
@@ -24,11 +36,6 @@ if(isset($data['do_signup']))
 		$errors[] = 'Введите password';
 	}
 
-	if($data['password_2'] != $data['password'])
-	{
-		//сделать вставку в спан как в перовм уроке
-		$errors[] = 'повторный пароль введен не верно';
-	}
 
 	if(R::count('users',"login = ?", array($data['login'])) > 0 )
 	{
@@ -48,6 +55,8 @@ if(isset($data['do_signup']))
 		//оставить массив, пригодиться для проверки ошибок и будет доступ к кнопке зарегать
 		$user = R::dispense('users');
 		$user->login = $data['login'];
+		$user->name = $data['name'];
+		$user->surname = $data['surname'];
 		$user->email = $data['email'];
 		$user->password = password_hash($data['password'], PASSWORD_DEFAULT);//$data['password'];
 		R::store($user);
@@ -62,30 +71,36 @@ if(isset($data['do_signup']))
 ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
+<!-- форма-->
 <form action="/signup.php" method="POST">
 	
 	<p>
-		<p><strong>Ваш логин</strong>:</p>
+		<p><strong>Никнейм</strong>:</p>
 		<input type="text" name="login" value="<?php echo @$data['login']; ?>">
 	</p>
 
 	<p>
-		<p><strong>Ваш Email</strong>:</p>
+		<p><strong>Имя</strong>:</p>
+		<input type="text" name="name" value="<?php echo @$data['name']; ?>">
+	</p>
+
+	<p>
+		<p><strong>Фамилия</strong>:</p>
+		<input type="text" name="surname" value="<?php echo @$data['surname']; ?>">
+	</p>
+
+	<p>
+		<p><strong>Электронная почта</strong>:</p>
 		<input type="email" name="email" value="<?php echo @$data['email']; ?>">
 	</p>
 
 	<p>
-		<p><strong>Ваш пароль</strong>:</p>
+		<p><strong>Пароль</strong>:</p>
 		<input type="password" name="password" value="<?php echo @$data['password']; ?>">
 	</p>
 
 	<p>
-		<p><strong>Введите Ваш пароль еще раз</strong>:</p>
-		<input type="password" name="password_2" value="<?php echo @$data['password_2']; ?>">
-	</p>
-
-	<p>
-		<button type="submit" name="do_signup">Зарегистрироваться</button>
+		<button type="submit" name="do_signup">Готово</button>
 	</p>
 
 
